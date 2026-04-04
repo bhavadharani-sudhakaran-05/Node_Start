@@ -54,11 +54,52 @@
 // output will be shown in the chrome browser (developer tools=>network)
 // we can able  to  see response in that localhost,headers,...
 
- const http = require ('http');
-//  fs - file system core module
+//    const http = require ('http');
+// //  fs - file system core module
+//    const fs=require('fs');
+//    const server=http.createServer((req,res)=>
+//    {
+//     const url=req.url;
+//     const method=req.method;
+//     if(url==='/')
+//     {
+//     res.setHeader('Content-type','text/html')
+//     res.write('<html>')
+//     res.write('<head><title>enter form details</title></head>')
+//     res.write('<body><form action="/message" method="POST"><input type="text" name="message"> <input type="submit" value="send"></form></body>')
+//     res.write('</html>')
+//     return res.end();
+//     }
+
+
+//     if(url==='/message'  && method == 'POST' )
+//     {
+//         fs.writeFileSync('hello.txt','dummy')
+//         res.setHeader('Location','/')
+//         res.statusCode = 302 ; 
+//         return res.end();
+//     //302 - it used for redirecting the request
+//     // redirect the '/message' to that '/'  
+//     }
+
+
+//     res.setHeader('Content-type','text/html')
+//     res.write('<html>')
+//     res.write('<head><title>jvl tutorial</title></head>')
+//     res.write('<body><h1>Hello from node.js server</h1></body>')
+//     res.write('</html>')
+//     res.end();
+
+// })
+// server.listen(3000);
+
+
+// ****************************stream and buffer************************************
+
+const http = require ('http');
  const fs=require('fs');
-const server=http.createServer((req,res)=>
-{
+   const server=http.createServer((req,res)=>
+   {
     const url=req.url;
     const method=req.method;
     if(url==='/')
@@ -66,7 +107,7 @@ const server=http.createServer((req,res)=>
     res.setHeader('Content-type','text/html')
     res.write('<html>')
     res.write('<head><title>enter form details</title></head>')
-    res.write('<body><form action="/message" method="POST"><input type="text" name="message"> <input type="submit" value="send"></form></body>')
+    res.write('<body><form enctype="multipart/form-data" action="/message" method="POST"><input type="text" name="message"> <input type="file" name="file"> <input type="submit" value="send"></form></body>')
     res.write('</html>')
     return res.end();
     }
@@ -74,14 +115,15 @@ const server=http.createServer((req,res)=>
 
     if(url==='/message'  && method == 'POST' )
     {
+        req.on('data',(chunk)=>{
+            console.log('chunks:');
+                   console.log(chunk);
+        })
         fs.writeFileSync('hello.txt','dummy')
         res.setHeader('Location','/')
         res.statusCode = 302 ; 
         return res.end();
-   //302 - it used for redirecting the request
-   // redirect the '/message' to that '/'  
-
-    }
+         }
 
 
     res.setHeader('Content-type','text/html')
@@ -93,5 +135,3 @@ const server=http.createServer((req,res)=>
 
 })
 server.listen(3000);
-
-
