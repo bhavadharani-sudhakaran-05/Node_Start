@@ -107,7 +107,7 @@ const http = require ('http');
     res.setHeader('Content-type','text/html')
     res.write('<html>')
     res.write('<head><title>enter form details</title></head>')
-    res.write('<body><form enctype="multipart/form-data" action="/message" method="POST"><input type="text" name="message"> <input type="file" name="file"> <input type="submit" value="send"></form></body>')
+    res.write('<body><form enctype="multipart/form-data" action="/message" method="POST"><input type="text" name="message"> <input type="submit" value="send"></form></body>')
     res.write('</html>')
     return res.end();
     }
@@ -115,9 +115,16 @@ const http = require ('http');
 
     if(url==='/message'  && method == 'POST' )
     {
+       const body = [] ;
         req.on('data',(chunk)=>{
-            console.log('chunks:');
-                   console.log(chunk);
+                   body.push(chunk);
+        }) 
+        req.on('end',()=>
+        {
+            const parsedBody = Buffer.concat(body).toString();
+            const message=parsedBody.split('=');
+            fs.writeFileSync('hello.txt', message[1]);
+// for adding all buffer we have to concat all the buffer
         })
         fs.writeFileSync('hello.txt','dummy')
         res.setHeader('Location','/')
