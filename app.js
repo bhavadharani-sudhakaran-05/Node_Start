@@ -121,12 +121,22 @@ const http = require ('http');
         }) 
         req.on('end',()=>
         {
+            
+            
+            console.log('End event received');
             const parsedBody = Buffer.concat(body).toString();
+             // for adding all buffer we have to concat all the buffer
             const message=parsedBody.split('=');
             fs.writeFileSync('hello.txt', message[1]);
-// for adding all buffer we have to concat all the buffer
+
+        fs.writeFileSync('hello.txt','dummy')
+        console.log('FileWrite completed!');
+        res.setHeader('Location','/')
+        res.statusCode = 302 ; 
+        
         })
         fs.writeFileSync('hello.txt','dummy')
+        console.log('FileWrite completed!');
         res.setHeader('Location','/')
         res.statusCode = 302 ; 
         return res.end();
